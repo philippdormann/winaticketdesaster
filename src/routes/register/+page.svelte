@@ -10,8 +10,21 @@
 		firstName: '',
 		lastName: '',
 		email: '',
+		birthday: '',
 		passportNr: ''
 	};
+	const maxAgeTimestamp = new Date('1996-06-12').getTime() / 1000;
+	const minAgeTimestamp = new Date('2005-06-12').getTime() / 1000;
+	function isBirthdayValid(bday) {
+		if (bday.length === 10) {
+			const bdayTimestamp = new Date(bday).getTime() / 1000;
+			console.log({ bdayTimestamp });
+			if (bdayTimestamp <= minAgeTimestamp && bdayTimestamp >= maxAgeTimestamp) {
+				return true;
+			}
+		}
+		return false;
+	}
 	let status = '';
 </script>
 
@@ -26,6 +39,7 @@
 				if (
 					(isPassportNumber(data.passportNr, 'DE') || isPassportNumber(data.passportNr, 'FR')) &&
 					isEmail(data.email) &&
+					isBirthdayValid(data.birthday) &&
 					data.firstName.trim() &&
 					data.lastName.trim()
 				) {
@@ -118,6 +132,21 @@
 						id="hs-email-contacts-1"
 						autocomplete="email"
 						class="py-3 px-4 block w-full border-gray-200 border rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400"
+					/>
+				</div>
+				<div>
+					<label for="hs-bday" class="block text-sm text-gray-700 font-medium dark:text-white"
+						>Geburtstag</label
+					>
+					<input
+						required
+						type="date"
+						class:border-red-500={status === 'invalidData' && !isBirthdayValid(data.birthday)}
+						bind:value={data.birthday}
+						autocomplete="birthday"
+						name="hs-bday"
+						id="hs-bday"
+						class="py-3 px-4 block w-full border-gray-200 border rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 uppercase"
 					/>
 				</div>
 				<div>
