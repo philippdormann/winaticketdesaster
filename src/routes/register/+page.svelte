@@ -46,7 +46,7 @@
 					}, 1500);
 				} else {
 					toast?.dismiss();
-					toast.error('unvollständige/ falsche Daten');
+					// toast.error('unvollständige/ falsche Daten');
 					status = 'invalidData';
 				}
 			}
@@ -57,7 +57,7 @@
 				class="mt-2 bg-red-500 text-sm text-white rounded-md p-4 mb-4 selection:bg-white selection:text-black"
 				role="alert"
 			>
-				Deine Daten sind unvollständig/ falsch.<br />Bitte überprüfe deine Eingaben.
+				Deine Daten sind unvollständig/ falsch.<br />Bitte überprüfe die markierten Felder.
 			</div>
 		{/if}
 		<div class="grid gap-4 lg:gap-6">
@@ -69,7 +69,10 @@
 						>{getTranslation('form_label_firstname', $language)}</label
 					>
 					<input
+						placeholder={getTranslation('form_label_firstname', $language)}
+						class:border-red-500={status === 'invalidData' && !data.firstName.trim()}
 						bind:value={data.firstName}
+						required
 						type="text"
 						name="hs-firstname-contacts-1"
 						id="hs-firstname-contacts-1"
@@ -84,7 +87,10 @@
 						>{getTranslation('form_label_lastname', $language)}</label
 					>
 					<input
+						placeholder={getTranslation('form_label_lastname', $language)}
+						class:border-red-500={status === 'invalidData' && !data.lastName.trim()}
 						bind:value={data.lastName}
+						required
 						type="text"
 						name="hs-lastname-contacts-1"
 						id="hs-lastname-contacts-1"
@@ -103,7 +109,10 @@
 						>{getTranslation('form_label_email', $language)}</label
 					>
 					<input
+						class:border-red-500={status === 'invalidData' && !isEmail(data.email)}
+						placeholder={getTranslation('form_label_email', $language)}
 						bind:value={data.email}
+						required
 						type="email"
 						name="hs-email-contacts-1"
 						id="hs-email-contacts-1"
@@ -118,8 +127,11 @@
 						>{getTranslation('form_label_id', $language)}</label
 					>
 					<input
+						class:border-red-500={status === 'invalidData' &&
+							!(isPassportNumber(data.passportNr, 'DE') || isPassportNumber(data.passportNr, 'FR'))}
 						bind:value={data.passportNr}
 						placeholder="z.B. L01X00T47"
+						required
 						type="text"
 						autocomplete="ausweisnummer"
 						name="hs-phone-number-1"
