@@ -6,6 +6,7 @@
 	import { goto } from '$app/navigation';
 	import toast from 'svelte-french-toast';
 	let data = {
+		country: '',
 		firstName: '',
 		lastName: '',
 		email: '',
@@ -28,6 +29,10 @@
 					data.firstName.trim() &&
 					data.lastName.trim()
 				) {
+					data.country = 'DE';
+					if (isPassportNumber(data.passportNr, 'FR')) {
+						data.country = 'FR';
+					}
 					toast?.dismiss();
 					toast.loading('Registrierung läuft...');
 					status = 'submitting';
